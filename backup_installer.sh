@@ -28,9 +28,9 @@ ascii_art_header() {
 '   :  ; |   | |  | |  \  \    `.    '  : |__    \__\/: . .  '  : |__  '  : |__  .    ' / | |  | '    
 |   |  ' |   | |  |/    `----.   \   |  | '.'|   ," .--.; |  |  | '.'| |  | '.'| '   ;   /| ;  : |    
 '   :  | |   | |--'    /  /`--'  /   ;  :    ;  /  /  ,.  |  ;  :    ; ;  :    ; '   |  / | |  , ;    
-;   |.'  |   |/       '--'.     /    |  ,   /  ;  :   .'   \ |  ,   /  |  ,   /  |   :    |  ---'     
-'---'    '---'          `--'---'      ---`-'   |  ,     .-./  ---`-'    ---`-'    \   \  /            
-                                                `--`---'                           `----' 
+;   |.'  |   |/       '--'.     /    |  ,   /  ;  :   .'   \ |  ,   /  |  ,   /  |   :    |  ---'
+'---'    '---'          `--'---'      ---`-'   |  ,     .-./  ---`-'    ---`-'    \   \  /
+                                                `--`---'                           `----'
 EOF
 }
 
@@ -643,7 +643,7 @@ prompt_update() {
         elif [[ "$answer" == "no" || "$answer" == "n" ]]; then
             dynamic_color_line "You have chosen not to update!"
             echo -e "${MAGENTA}==>> This could have catastrophic consequences. You have been WARNED!${NC}" 
-            sleep 1
+            sleep 3
             echo -e "${ORANGE}  >> Continuing...${NC}"
             break
         else
@@ -800,7 +800,7 @@ install_from_backup() {
     done
 }
 
-# orchestrate
+# Orchestrate
 main() { 
     check_terminal
     show_ascii_header
