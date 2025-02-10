@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -euo pipefail  # Improved error handling
+set -euo pipefail
 # -e: exit on error
 # -u: treat unset variables as an error
 # -o pipefail: ensure pipeline errors are captured
