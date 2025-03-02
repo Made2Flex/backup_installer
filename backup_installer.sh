@@ -634,6 +634,23 @@ check_aur_pkg() {
     fi
 }
 
+# Function to remove pacman db lock
+handle_db_lock() {
+    if [[ -f /var/lib/pacman/db.lck ]]; then
+        echo -e "${RED}  >> Pacman database is locked.${NC}"
+        echo -e "${LIGHT_BLUE}==>> Attempting to remove the pacman db lock...${NC}"
+        sudo rm -fv /var/lib/pacman/db.lck
+        if [[ $? -eq 0 ]]; then
+            echo -e "${GREEN}  >> Pacman db lock removed successfully.${NC}"
+            return 0 # Lock handled successfully
+        else
+            echo -e "${RED}!!! Failed to remove pacman db lock.${NC}"
+            return 1 # Lock removal failed
+        fi
+    fi
+    return 0 # No lock was found, so it's safe to proceed
+}
+
 # Function to update the system
 update_system() {
     case "$DISTRO_ID" in
@@ -715,6 +732,7 @@ prompt_update() {
         answer=$(echo "$answer" | tr '[:upper:]' '[:lower:]')
 
         if [[ -z "$answer" || "$answer" == "yes" || "$answer" == "y" || "$answer" == "" ]]; then
+            handle_db_lock
             update_system
             break
         elif [[ "$answer" == "no" || "$answer" == "n" ]]; then
