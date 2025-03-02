@@ -1,6 +1,57 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+SCRIPT_VERSION="1.0.1"
+SCRIPT_NAME=$(basename "$0")
+
+show_version() {
+    echo -e "${GREEN}Version $SCRIPT_VERSION${NC}"
+    exit 0
+}
+
+# Function to display help information
+show_help() {
+    echo -e "${LIGHT_BLUE}Usage:${NC} ${GREEN}$0${NC} ${BLUE}[OPTIONS]${NC}"
+    echo
+    echo -e "${MAGENTA}This script is a backup installer for Linux systems.${NC}"
+    echo
+    echo -e "${LIGHT_BLUE}Options:${NC}"
+    echo "  -h, --help     Display this help message and exit"
+    echo "  -v, --version  Show version information and exit"
+    echo
+    echo -e "${LIGHT_BLUE}This script will:${NC}"
+    echo -e "${GREEN}. Install packages from a backup file${NC}"
+    echo -e "${GREEN}. Handle package dependencies and installations${NC}"
+    echo -e "${GREEN}. Configure system settings post-installation${NC}"
+    echo -e "${GREEN}. Manage display manager and shell configuration${NC}"
+    echo
+    echo -e "${BLUE}. Supports multiple Linux distributions (Arch based and Debian based)${NC}"
+    echo
+    echo -e "${ORANGE}Note:${NC} This script requires root privileges for certain operations."
+    echo -e "      It comes as is, with ${RED}NO GUARANTEE!${NC}"
+    echo -e "${ORANGE}      Always${NC} review the backup file before installation."
+    exit 0
+}
+
+# Function to parse -v and -h
+parser() {
+    if [[ $# -gt 0 ]]; then
+        case "$1" in
+            -h|--help)
+                show_help
+                ;;
+            -v|--version)
+                show_version
+                ;;
+            *)
+                echo -e "${RED}Error: This script does not accept arguments${NC}"
+                show_help
+                exit 1
+                ;;
+        esac
+    fi
+}
+
+set -euo pipefail  # Improved error handling
 # -e: exit on error
 # -u: treat unset variables as an error
 # -o pipefail: ensure pipeline errors are captured
@@ -16,7 +67,7 @@ WHITE='\033[0;37m'
 NC='\033[0m' # No color
 
 # ASCII Art Header
-ascii_art_header() {
+ascii_header() {
     cat << 'EOF'
    ,---,                               ___                     ,--,      ,--,                         
 ,`--.' |                             ,--.'|_                 ,--.'|    ,--.'|                         
@@ -32,6 +83,31 @@ ascii_art_header() {
 '---'    '---'          `--'---'      ---`-'   |  ,     .-./  ---`-'    ---`-'    \   \  /
                                                 `--`---'                           `----'
 EOF
+}
+
+dynamic_me() {
+    local message="$1"
+    #local colors=("red" "orange" "cyan" "magenta" "dark green" "blue")
+    local colors=("\033[1;31m" "\033[1;33m" "\033[1;36m" "\033[1;35m" "\033[0;32m" "\033[0;34m")
+    local NC="\033[0m"
+    local delay=0.1
+    local iterations=${2:-5}  # customize as needed
+
+    {
+        for ((i=1; i<=iterations; i++)); do
+            # Cycle through colors
+            color=${colors[$((i % ${#colors[@]}))]}
+
+            # Use \r to return to start of line, update with new color
+            printf "\r${color}                                                                             ${message}${NC}"
+
+            sleep "$delay"
+        done
+
+        # Final clear line
+        printf "\r\033[K"
+        #printf "\n"
+    } >&2
 }
 
 # Preflight check
@@ -398,11 +474,12 @@ greet_user() {
 }
 
 # Function to show ascii art header
-show_ascii_header() {
+# Function to show ascii header
+show_header() {
     echo -e "${BLUE}"
-    ascii_art_header
+    ascii_header
+    dynamic_me "Qnk6IE1hZGUyRmxleA=="
     echo -e "${NC}"
-    sleep 1
 }
 
 # Function to refresh mirrors of all supported distros!
@@ -802,8 +879,9 @@ install_from_backup() {
 
 # Orchestrate
 main() { 
+    parser "$@"
     check_terminal
-    show_ascii_header
+    show_header
     greet_user
     Preflight_check
     check_dependencies
@@ -812,5 +890,5 @@ main() {
     install_from_backup
 }
 
-# Let it reap
-main
+# Let it rip
+main "$@"
