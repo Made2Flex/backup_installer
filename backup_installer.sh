@@ -473,7 +473,6 @@ greet_user() {
     printf "${GREEN}$GREET_MESSAGE${NC}\n" "$username"
 }
 
-# Function to show ascii art header
 # Function to show ascii header
 show_header() {
     echo -e "${BLUE}"
@@ -482,7 +481,7 @@ show_header() {
     echo -e "${NC}"
 }
 
-# Function to refresh mirrors of all supported distros!
+# Function to refresh mirrors of all supported distros
 refresh_mirror_source() {
     while true; do
         read -rp "Do You Want To Refresh Mirrors now? (Yes/No): " answer
@@ -502,7 +501,6 @@ refresh_mirror_source() {
 
                         # Handle multiple mirror refresh commands for EndeavourOS
                         if [[ "$DISTRO_ID" == "endeavouros" ]]; then
-                            # Try both commands
                             if command -v eos-rankmirrors &> /dev/null; then
                                 echo -e "${LIGHT_BLUE}  >> Running eos-rankmirrors...${NC}"
                                 if eos-rankmirrors; then
@@ -561,7 +559,6 @@ refresh_mirror_source() {
 
 # Dummy function to flush output
 fflush() {
-    # Force output buffer to flush
     >&2 echo -n ""
 }
 
@@ -648,7 +645,7 @@ handle_db_lock() {
             return 1 # Lock removal failed
         fi
     fi
-    return 0 # No lock was found, so it's safe to proceed
+    return 0 # No lock was found
 }
 
 # Function to update the system
@@ -838,7 +835,8 @@ install_from_backup() {
                         if [ -n "$enabled_dm" ]; then
                             echo -e "${GREEN}  >> Enabled display manager: $enabled_dm${NC}"
                         else
-                            echo -e "${YELLOW}  >> No display manager found to enable${NC}"
+                            echo -e "${YELLOW}  >> No supprted display manager found to enable.${NC}"
+                            echo -e "${YELLOW}  >> Edit line# 824 in the script to add your DM.${NC}"
                         fi
                         
                         # Change shell to zsh if available
