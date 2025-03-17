@@ -40,7 +40,7 @@ Run the script with:
 
 ## Acknowledgments
 
-This script is designed to work in conjunction with the [Mr. Updater GitHub repository](https://github.com/Made2Flex/Mr._Updater.git). For more details, please refer to the repository.
+This script is designed to work in conjunction with [Mr. Updater GitHub repository](https://github.com/Made2Flex/Mr._Updater.git). For more details, please refer to the repository.
 
 ## License
 
